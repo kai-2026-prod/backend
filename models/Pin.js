@@ -8,11 +8,12 @@ const pinSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        min: 3,
+        minlength: 3,
     },
     desc: {
         type: String,
         required: true,
+        minlength: 3,
     },
     rating:{
         type: Number,
@@ -23,10 +24,14 @@ const pinSchema = new mongoose.Schema({
     lat:{
         type: Number,
         require:true,
+        min: -90,
+        max: 90,
     },
     long:{
         type: Number,
         require:true,
+        min: -180,
+        max: 180,
     },
  }, {timestamps: true});
 
