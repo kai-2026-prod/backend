@@ -24,11 +24,13 @@ router.post('/register', async (req, res) => {
     }
 });
 
-//login
 router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({
-            email: req.body.email
+            $or: [
+                { email: req.body.login },
+                { username: req.body.login }
+            ]
         });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
