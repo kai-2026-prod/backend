@@ -8,6 +8,9 @@ module.exports = [
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "commonjs", // change to "module" if you use import/export
+      globals: {
+        ...globals.node
+      }
     },
     rules: {
       "no-unused-vars": "warn",
