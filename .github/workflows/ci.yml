@@ -25,3 +25,5 @@ jobs:
 
       - name: Run ESLint
         run: npx eslint . --ext .js --max-warnings 0
+        env:
+          ESLINT_USE_FLAT_CONFIG: false
