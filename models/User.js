@@ -19,6 +19,22 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 6,
     },
+     city: {
+        type: String,
+        required: false,
+    },
+    lat: {
+        type: Number,
+        required: false,
+        min: -90,
+        max: 90,
+    },
+    long: {
+        type: Number,
+        required: false,
+        min: -180,
+        max: 180,
+    },
 }, {timestamps: true});
 
 module.exports = mongoose.model('User', userSchema);

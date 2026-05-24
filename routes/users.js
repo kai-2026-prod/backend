@@ -2,21 +2,21 @@ const router = require('express').Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
-//register
+// register
 router.post('/register', async (req, res) => {
-    try{
-        //generate a new password
+    try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-        //create a new user
         const newUser = new User({
             username: req.body.username,
             email: req.body.email,
-            password: hashedPassword
+            password: hashedPassword,
+            city: req.body.city || null,
+            lat: req.body.lat || null,
+            long: req.body.long || null,
         });
 
-        //save user and respond
         const user = await newUser.save();
         res.status(201).json(user._id);
     } catch (err) {
@@ -24,6 +24,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// login
 router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({
@@ -39,7 +40,26 @@ router.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
-        res.status(200).json({ _id: user._id, username: user.username });
+        res.status(200).json({
+            _id: user._id,
+            username: user.username,
+            lat: user.lat || null,
+            long: user.long || null,
+            city: user.city || null,
+        });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+router.put('/city', async (req, res) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            { username: req.body.username },
+            { $set: { city: req.body.city, lat: req.body.lat, long: req.body.long } },
+            { new: true }
+        );
+        res.status(200).json({ city: user.city, lat: user.lat, long: user.long });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
