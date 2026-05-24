@@ -48,11 +48,12 @@ router.put("/:id", async (req, res) => {
 });
 
 // upload photo for a pin
-router.post("/:id/photo", upload.single("photo"), async (req, res) => {
+router.post("/:id/photos", upload.array("photos", 5), async (req, res) => {
     try {
+        const urls = req.files.map(f => f.path);
         const updatedPin = await Pin.findByIdAndUpdate(
             req.params.id,
-            { $set: { photo: req.file.path } },
+            { $push: { photos: { $each: urls } } },
             { new: true }
         );
         res.status(200).json(updatedPin);

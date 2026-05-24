@@ -33,9 +33,9 @@ const pinSchema = new mongoose.Schema({
         min: -180,
         max: 180,
     },
-    photo: {
-        type: String,
-        required: false,
+    photos: {
+        type: [String],
+        default: [],
     },
  }, {timestamps: true});
 
