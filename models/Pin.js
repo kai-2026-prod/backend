@@ -33,6 +33,11 @@ const pinSchema = new mongoose.Schema({
         min: -180,
         max: 180,
     },
+    photos: {
+        type: [String],
+        default: [],
+    },
+   
  }, {timestamps: true});
 
 module.exports = mongoose.model('Pin', pinSchema);
